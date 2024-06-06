@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     form.addEventListener('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault();2
 
         const formData = new FormData(form);
         const xhr = new XMLHttpRequest();

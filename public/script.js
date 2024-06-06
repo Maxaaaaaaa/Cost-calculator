@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editForm = document.getElementById('editForm');
 
     form.addEventListener('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault();1
 
         const formData = new FormData(form);
         const xhr = new XMLHttpRequest();

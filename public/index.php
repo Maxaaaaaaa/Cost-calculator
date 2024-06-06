@@ -109,6 +109,10 @@ include '../templates/header.php';
     const chartData = <?= json_encode($chartData) ?>;
 </script>
 <script src="script.js"></script>
+<footer>
+    <p>© 2023 Ваше Имя. Все права защищены.</p>
+    <p>Контактная информация: ваш.email@example.com</p>
+</footer>
 </body>
 </html>
 

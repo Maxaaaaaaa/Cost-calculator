@@ -17,15 +17,25 @@ $userId = $_SESSION['user_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
 
-    $stmt = $pdo->prepare("DELETE FROM items WHERE id = :id AND user_id = :user_id");
+    // Check if the item exists and belongs to the user
+    $stmt = $pdo->prepare("SELECT * FROM items WHERE id = :id AND user_id = :user_id");
     $stmt->execute(['id' => $id, 'user_id' => $userId]);
+    $item = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($stmt->rowCount() > 0) {
-        $items = $calculator->getItems($userId);
-        $total = $calculator->calculateTotal($items);
+    if ($item) {
+        // Delete the item
+        $stmt = $pdo->prepare("DELETE FROM items WHERE id = :id AND user_id = :user_id");
+        $stmt->execute(['id' => $id, 'user_id' => $userId]);
 
-        $response['success'] = true;
-        $response['total'] = $total;
+        if ($stmt->rowCount() > 0) {
+            $items = $calculator->getItems($userId);
+            $total = $calculator->calculateTotal($items);
+
+            $response['success'] = true;
+            $response['total'] = $total;
+        } else {
+            $response['message'] = 'Failed to delete the item.';
+        }
     } else {
         $response['message'] = 'Item not found or not authorized.';
     }

@@ -26,6 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $items = $calculator->getItems($userId);
 $total = $calculator->calculateTotal($items);
 
+// Prepare data for the chart
+$chartData = [];
+foreach ($items as $item) {
+    $chartData[] = [
+        'name' => htmlspecialchars($item['name']),
+        'price' => htmlspecialchars($item['price'])
+    ];
+}
+
 include '../templates/header.php';
 ?>
 
@@ -35,6 +44,7 @@ include '../templates/header.php';
     <meta charset="UTF-8">
     <title>Online Cost Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
@@ -74,6 +84,9 @@ include '../templates/header.php';
         </tbody>
     </table>
     <h2>Total: <?= $total ?></h2>
+
+    <!-- Pie Chart Container -->
+    <canvas id="expensesChart" width="400" height="400"></canvas>
 </div>
 
 <!-- Edit Item Modal -->
@@ -92,6 +105,9 @@ include '../templates/header.php';
     </form>
 </div>
 
+<script>
+    const chartData = <?= json_encode($chartData) ?>;
+</script>
 <script src="script.js"></script>
 </body>
 </html>

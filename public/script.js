@@ -5,6 +5,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const editModal = document.getElementById('editModal');
     const editForm = document.getElementById('editForm');
 
+    // Initialize Chart.js
+    const ctx = document.getElementById('expensesChart').getContext('2d');
+    let chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: chartData.map(item => item.name),
+            datasets: [{
+                data: chartData.map(item => item.price),
+                backgroundColor: chartData.map(() => `hsl(${Math.random() * 360}, 100%, 75%)`)
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Monthly Expenses'
+                }
+            }
+        }
+    });
+
+    function updateChart() {
+        chart.data.labels = chartData.map(item => item.name);
+        chart.data.datasets[0].data = chartData.map(item => item.price);
+        chart.update();
+    }
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();1
 
@@ -19,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     newItem.innerHTML = `<td>${response.item.name}</td><td>${response.item.price}</td><td><button class="edit" data-id="${response.item.id}">Edit</button><button class="delete" data-id="${response.item.id}">Delete</button></td>`;
                     itemList.appendChild(newItem);
                     totalElement.textContent = `Total: ${response.total}`;
+                    chartData.push(response.item);
+                    updateChart();
                     form.reset();
                 } else {
                     alert(response.message);
@@ -58,6 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (response.success) {
                         event.target.closest('tr').remove();
                         totalElement.textContent = `Total: ${response.total}`;
+                        chartData = chartData.filter(item => item.id !== parseInt(id));
+                        updateChart();
                     } else {
                         alert(response.message);
                     }
@@ -81,6 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     row.children[0].textContent = response.item.name;
                     row.children[1].textContent = response.item.price;
                     totalElement.textContent = `Total: ${response.total}`;
+                    const itemIndex = chartData.findIndex(item => item.id === response.item.id);
+                    if (itemIndex !== -1) {
+                        chartData[itemIndex] = response.item;
+                        updateChart();
+                    }
                     editModal.style.display = 'none';
                 } else {
                     alert(response.message);

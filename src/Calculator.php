@@ -30,6 +30,7 @@ class Calculator
     {
         $stmt = $this->pdo->prepare("INSERT INTO items (name, price, user_id) VALUES (:name, :price, :user_id)");
         $stmt->execute(['name' => $name, 'price' => $price, 'user_id' => $userId]);
+        return $this->pdo->lastInsertId();
     }
 
     public function updateItem($id, $name, $price, $userId)

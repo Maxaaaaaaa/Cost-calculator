@@ -52,6 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
+
+
+
+
         const formData = new FormData(form);
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'add_item.php', true);

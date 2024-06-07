@@ -50,43 +50,51 @@ include '../templates/header.php';
 <div class="container">
     <h1>Online Cost Calculator</h1>
 
-    <form method="POST" action="">
-        <div class="form-group">
-            <label for="name">Item Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" step="0.01" required>
-        </div>
-        <button type="submit">Add Item</button>
-    </form>
+    <div class="content">
+        <div class="form-table-container">
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label for="name">Item Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <button type="submit">Add Item</button>
+            </form>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($items as $item): ?>
-            <tr>
-                <td><?= htmlspecialchars($item['name']) ?></td>
-                <td><?= htmlspecialchars($item['price']) ?></td>
-                <td>
-                    <button class="edit" data-id="<?= $item['id'] ?>">Edit</button>
-                    <button class="delete" data-id="<?= $item['id'] ?>">Delete</button>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-    <h2>Total: <?= $total ?></h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($items as $item): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($item['name']) ?></td>
+                            <td><?= htmlspecialchars($item['price']) ?></td>
+                            <td>
+                                <button class="edit" data-id="<?= $item['id'] ?>">Edit</button>
+                                <button class="delete" data-id="<?= $item['id'] ?>">Delete</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <h2>Total: <?= $total ?></h2>
+            </div>
+        </div>
 
-    <!-- Pie Chart Container -->
-    <canvas id="expensesChart" width="400" height="400"></canvas>
+        <!-- Pie Chart Container -->
+        <div class="chart-container" style="width: 275px; height: 275px;">
+            <canvas id="expensesChart"></canvas>
+        </div>
+    </div>
 </div>
 
 <!-- Edit Item Modal -->

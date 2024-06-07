@@ -21,6 +21,19 @@ h1 {
     margin-bottom: 20px;
 }
 
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.form-table-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 20px;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -56,6 +69,10 @@ form button:hover {
     background-color: #218838;
 }
 
+.table-container {
+    margin-top: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -74,4 +91,9 @@ th {
 
 h2 {
     text-align: center;
+}
+
+.chart-container {
+    width: 275px;
+    height: 275px;
 }

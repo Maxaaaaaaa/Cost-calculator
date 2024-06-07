@@ -1,15 +1,27 @@
 <?php
 require '../config/database.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
-    $stmt->execute(['username' => $username, 'password' => $password]);
+    // Check if the username already exists
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
+    $stmt->execute(['username' => $username]);
+    $userExists = $stmt->fetchColumn();
 
-    header('Location: login.php');
-    exit;
+    if ($userExists) {
+        echo "Username already exists. Please choose a different username.";
+    } else {
+        // Insert new user
+        $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+        $stmt->execute(['username' => $username, 'password' => $password]);
+
+        // Redirect to login page or another page
+        header('Location: login.php');
+        exit;
+    }
 }
 ?>
 
@@ -21,13 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Register</h1>
-<form method="POST" action="">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <button type="submit">Register</button>
-</form>
+<div class="container">
+    <h1>Register</h1>
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
 </body>
 </html>

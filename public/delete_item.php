@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $response['success'] = true;
             $response['total'] = $total;
+            $response['items'] = $items; // Return updated items for chart update
         } else {
             $response['message'] = 'Failed to delete the item.';
         }

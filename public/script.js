@@ -5,19 +5,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const editModal = document.getElementById('editModal');
     const editForm = document.getElementById('editForm');
 
+    // Function to generate random color
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
     // Initialize Chart.js
     const ctx = document.getElementById('expensesChart').getContext('2d');
+    let chartColors = chartData.map(() => getRandomColor());
     let chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: chartData.map(item => item.name),
             datasets: [{
                 data: chartData.map(item => item.price),
-                backgroundColor: chartData.map(() => `hsl(${Math.random() * 360}, 100%, 75%)`)
+                backgroundColor: chartColors
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'top',
@@ -33,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateChart() {
         chart.data.labels = chartData.map(item => item.name);
         chart.data.datasets[0].data = chartData.map(item => item.price);
+        chart.data.datasets[0].backgroundColor = chartColors;
         chart.update();
     }
 
     form.addEventListener('submit', function(event) {
-        event.preventDefault();1
-
+        event.preventDefault();
 
         const formData = new FormData(form);
         const xhr = new XMLHttpRequest();
@@ -52,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     itemList.appendChild(newItem);
                     totalElement.textContent = `Total: ${response.total}`;
                     chartData.push(response.item);
+                    chartColors.push(getRandomColor());
                     updateChart();
                     form.reset();
                 } else {
@@ -92,7 +105,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (response.success) {
                         event.target.closest('tr').remove();
                         totalElement.textContent = `Total: ${response.total}`;
-                        chartData = chartData.filter(item => item.id !== parseInt(id));
+                        const itemIndex = chartData.findIndex(item => item.id === parseInt(id));
+                        if (itemIndex !== -1) {
+                            chartData.splice(itemIndex, 1);
+                            chartColors.splice(itemIndex, 1);
+                        }
                         updateChart();
                     } else {
                         alert(response.message);
@@ -120,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const itemIndex = chartData.findIndex(item => item.id === response.item.id);
                     if (itemIndex !== -1) {
                         chartData[itemIndex] = response.item;
-                        updateChart();
                     }
+                    updateChart();
                     editModal.style.display = 'none';
                 } else {
                     alert(response.message);

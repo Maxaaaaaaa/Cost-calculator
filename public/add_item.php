@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['success'] = true;
         $response['item'] = ['id' => $lastInsertId, 'name' => htmlspecialchars($name), 'price' => htmlspecialchars($price)];
         $response['total'] = $total;
+        $response['items'] = $items; // Return updated items for chart update
     } else {
         $response['message'] = 'Invalid price value.';
     }

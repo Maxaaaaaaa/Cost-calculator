@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .toggle-password {
             position: absolute;
-            right: 70px; /* Перемещаем иконку глаза немного влево */
+            right: 85px; /* Перемещаем иконку глаза немного влево */
             top: 55%; /* Перемещаем иконку глаза немного вниз */
             transform: translateY(-50%);
             cursor: pointer;

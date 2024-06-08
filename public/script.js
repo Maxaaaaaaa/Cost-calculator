@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const itemList = document.querySelector('tbody');
-    const totalElement = document.querySelector('h2');
-    const editModal = document.getElementById('editModal');
+    const totalElement = document.querySelector('.chart-container h2');
+    const editFormContainer = document.getElementById('editFormContainer');
     const editForm = document.getElementById('editForm');
 
     // Function to generate random color
@@ -49,12 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
         chart.update();
     }
 
+    function updateTotal(total) {
+        totalElement.textContent = `Total: ${parseFloat(total).toFixed(2)}`;
+    }
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-
-
-
-
 
         const formData = new FormData(form);
         const xhr = new XMLHttpRequest();
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const newItem = document.createElement('tr');
                     newItem.innerHTML = `<td>${response.item.name}</td><td>${response.item.price}</td><td><button class="edit" data-id="${response.item.id}">Edit</button><button class="delete" data-id="${response.item.id}">Delete</button></td>`;
                     itemList.appendChild(newItem);
-                    totalElement.textContent = `Total: ${response.total}`;
+                    updateTotal(response.total);
                     chartData.push(response.item);
                     chartColors.push(getRandomColor());
                     updateChart();
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.getElementById('edit-id').value = response.item.id;
                         document.getElementById('edit-name').value = response.item.name;
                         document.getElementById('edit-price').value = response.item.price;
-                        editModal.style.display = 'block';
+                        editFormContainer.style.display = 'block';
                     } else {
                         alert(response.message);
                     }
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const response = JSON.parse(xhr.responseText);
                     if (response.success) {
                         event.target.closest('tr').remove();
-                        totalElement.textContent = `Total: ${response.total}`;
+                        updateTotal(response.total);
                         const itemIndex = chartData.findIndex(item => item.id === parseInt(id));
                         if (itemIndex !== -1) {
                             chartData.splice(itemIndex, 1);
@@ -137,18 +137,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     const row = document.querySelector(`button[data-id="${response.item.id}"]`).closest('tr');
                     row.children[0].textContent = response.item.name;
                     row.children[1].textContent = response.item.price;
-                    totalElement.textContent = `Total: ${response.total}`;
+                    updateTotal(response.total);
                     const itemIndex = chartData.findIndex(item => item.id === response.item.id);
                     if (itemIndex !== -1) {
                         chartData[itemIndex] = response.item;
                     }
                     updateChart();
-                    editModal.style.display = 'none';
+                    editFormContainer.style.display = 'none';
                 } else {
                     alert(response.message);
                 }
             }
         };
         xhr.send(formData);
+    });
+
+    // Remove any extra "Logout" elements if they exist
+    const extraLogoutElements = document.querySelectorAll('.logout-container, .logout-button');
+    extraLogoutElements.forEach(element => {
+        if (element.textContent.trim() === 'Logout') {
+            element.remove();
+        }
     });
 });

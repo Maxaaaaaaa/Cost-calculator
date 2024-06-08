@@ -14,11 +14,40 @@ body {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.logout-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logout-button {
+    padding: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.logout-button i {
+    font-size: 20px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
 }
 
 .content {
@@ -89,11 +118,22 @@ th {
     background-color: #f2f2f2;
 }
 
-h2 {
-    text-align: center;
-}
-
 .chart-container {
     width: 275px;
     height: 275px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Styles for the edit form */
+#editFormContainer {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 50%; /* Уменьшение ширины формы до 50% */
+    margin: 0 auto; /* Центрирование формы */
 }

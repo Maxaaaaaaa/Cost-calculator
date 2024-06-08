@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $_POST['price'];
 
     // Validate price
-    if (is_numeric($price) && $price > 0 && $price <= 999999999999.99) {
+    if (is_numeric($price) && $price >= -999999999999.99 && $price <= 999999999999.99) {
         $calculator->addItem($name, $price, $userId);
     } else {
         echo "Invalid price value.";
@@ -44,11 +44,16 @@ include '../templates/header.php';
     <meta charset="UTF-8">
     <title>Online Cost Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
     <h1>Online Cost Calculator</h1>
+
+    <div class="logout-container">
+        <a href="logout.php" class="logout-button"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
 
     <div class="content">
         <div class="form-table-container">
@@ -86,41 +91,37 @@ include '../templates/header.php';
                     <?php endforeach; ?>
                     </tbody>
                 </table>
-                <h2>Total: <?= $total ?></h2>
+            </div>
+
+            <!-- Edit Item Form -->
+            <div id="editFormContainer" style="display: none;">
+                <form id="editForm">
+                    <input type="hidden" id="edit-id" name="id">
+                    <div class="form-group">
+                        <label for="edit-name">Item Name:</label>
+                        <input type="text" id="edit-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-price">Price:</label>
+                        <input type="number" id="edit-price" name="price" step="0.01" required>
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
             </div>
         </div>
 
         <!-- Pie Chart Container -->
         <div class="chart-container" style="width: 275px; height: 275px;">
             <canvas id="expensesChart"></canvas>
+            <h2>Total: <?= $total ?></h2>
         </div>
     </div>
-</div>
-
-<!-- Edit Item Modal -->
-<div id="editModal" style="display:none;">
-    <form id="editForm">
-        <input type="hidden" id="edit-id" name="id">
-        <div class="form-group">
-            <label for="edit-name">Item Name:</label>
-            <input type="text" id="edit-name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="edit-price">Price:</label>
-            <input type="number" id="edit-price" name="price" step="0.01" required>
-        </div>
-        <button type="submit">Save Changes</button>
-    </form>
 </div>
 
 <script>
     const chartData = <?= json_encode($chartData) ?>;
 </script>
 <script src="script.js"></script>
-<footer>
-    <p>© 2023 Ваше Имя. Все права защищены.</p>
-    <p>Контактная информация: ваш.email@example.com</p>
-</footer>
 </body>
 </html>
 

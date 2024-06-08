@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $total = $calculator->calculateTotal($items);
 
             $response['success'] = true;
-            $response['total'] = $total;
+            $response['total'] = number_format($total, 2, '.', ''); // Format total to 2 decimal places
             $response['items'] = $items; // Return updated items for chart update
         } else {
             $response['message'] = 'Failed to delete the item.';

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $price = $_POST['price'];
 
-    if (is_numeric($price) && $price > 0 && $price <= 999999999999.99) {
+    if (is_numeric($price) && $price >= -999999999999.99 && $price <= 999999999999.99) {
         // Check if the item exists and belongs to the user
         $stmt = $pdo->prepare("SELECT * FROM items WHERE id = :id AND user_id = :user_id");
         $stmt->execute(['id' => $id, 'user_id' => $userId]);
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $response['success'] = true;
                 $response['item'] = ['id' => $id, 'name' => htmlspecialchars($name), 'price' => htmlspecialchars($price)];
-                $response['total'] = $total;
+                $response['total'] = number_format($total, 2, '.', ''); // Format total to 2 decimal places
                 $response['items'] = $items; // Return updated items for chart update
             } else {
                 $response['message'] = 'Item not found or not authorized.';

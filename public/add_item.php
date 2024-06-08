@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $price = $_POST['price'];
 
-    if (is_numeric($price) && $price > 0 && $price <= 999999999999.99) {
+    if (is_numeric($price) && $price >= -999999999999.99 && $price <= 999999999999.99) {
         $calculator->addItem($name, $price, $userId);
         $lastInsertId = $pdo->lastInsertId();
         $items = $calculator->getItems($userId);
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $response['success'] = true;
         $response['item'] = ['id' => $lastInsertId, 'name' => htmlspecialchars($name), 'price' => htmlspecialchars($price)];
-        $response['total'] = $total;
+        $response['total'] = number_format($total, 2, '.', ''); // Format total to 2 decimal places
         $response['items'] = $items; // Return updated items for chart update
     } else {
         $response['message'] = 'Invalid price value.';

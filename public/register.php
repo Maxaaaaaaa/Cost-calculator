@@ -1,10 +1,16 @@
 <?php
 require '../config/database.php';
+require '../src/encrypt.php'; // Подключаем файл с функциями шифрования
 session_start();
+
+$key = 'your-encryption-key'; // Замените на ваш ключ шифрования
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    // Шифрование пароля
+    $encryptedPassword = encryptData($password, $key);
 
     // Check if the username already exists
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
@@ -16,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Insert new user
         $stmt = $pdo->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
-        $stmt->execute(['username' => $username, 'password' => $password]);
+        $stmt->execute(['username' => $username, 'password' => $encryptedPassword]);
 
         // Redirect to login page or another page
         echo "<script>alert('Registration successful!'); window.location.href = 'login.php';</script>";

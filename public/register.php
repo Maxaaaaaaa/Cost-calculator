@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['username' => $username, 'password' => $encryptedPassword]);
 
         // Redirect to login page or another page
-        echo "<script>alert('Registration successful!'); window.location.href = 'login.php';</script>";
+        echo "<script>window.location.href = 'login.php';</script>";
         exit;
     }
 }

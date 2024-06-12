@@ -1,4 +1,9 @@
 <?php
+// Включаем отображение ошибок
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require '../config/database.php';
 require '../src/encrypt.php'; // Подключаем файл с функциями шифрования
 session_start();
@@ -9,27 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        // Проверка существования пользователя
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user) {
-        try {
-            // Дешифрование пароля
-            $decryptedPassword = decryptData($user['password'], $key);
+        if ($user) {
+            try {
+                // Дешифрование пароля
+                $decryptedPassword = decryptData($user['password'], $key);
 
-            if (password_verify($password, $decryptedPassword)) {
-                $_SESSION['user_id'] = $user['id'];
-                header('Location: index.php');
-                exit;
-            } else {
-                $error = "Invalid username or password.";
+                if (password_verify($password, $decryptedPassword)) {
+                    $_SESSION['user_id'] = $user['id'];
+                    header('Location: index.php');
+                    exit;
+                } else {
+                    $error = "Invalid username or password.";
+                }
+            } catch (Exception $e) {
+                $error = "An error occurred while decrypting the password: " . $e->getMessage();
             }
-        } catch (Exception $e) {
-            $error = "An error occurred while decrypting the password.";
+        } else {
+            $error = "Invalid username or password.";
         }
-    } else {
-        $error = "Invalid username or password.";
+    } catch (PDOException $e) {
+        $error = "Database error: " . $e->getMessage();
     }
 }
 ?>
@@ -154,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="container">
-    <img src="/image/png-transparent-computer-icons-icon-design-calculation-calculator-icon-text-rectangle-computer.png" alt="Logo" class="logo">
+    <img src="img/calculator.png" alt="Logo" class="logo">
     <h1>Login</h1>
     <?php if (isset($error)): ?>
         <p><?= htmlspecialchars($error) ?></p>

@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="container">
-    <img src="/image/png-transparent-computer-icons-icon-design-calculation-calculator-icon-text-rectangle-computer.png" alt="Logo" class="logo">
+    <img src="img/calculator.png" alt="Logo" class="logo">
     <h1>Register</h1>
     <form method="POST" action="">
         <div class="input-group">
@@ -161,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="input-group">
             <label for="cpassword">Confirm Password</label>
             <div class="input-wrapper">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-key"></i> <!-- Заменяем иконку замка на иконку ключа -->
                 <input type="password" id="cpassword" name="cpassword" required>
             </div>
             <div class="error"></div>

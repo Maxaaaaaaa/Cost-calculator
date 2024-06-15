@@ -30,9 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->rowCount() > 0) {
             $items = $calculator->getItems($userId);
             $total = $calculator->calculateTotal($items);
+            $todaySpending = $calculator->calculateTodaySpending($userId);
 
             $response['success'] = true;
             $response['total'] = number_format($total, 2, '.', ''); // Format total to 2 decimal places
+            $response['todaySpending'] = number_format($todaySpending, 2, '.', ''); // Format today's spending to 2 decimal places
             $response['items'] = $items; // Return updated items for chart update
         } else {
             $response['message'] = 'Failed to delete the item.';

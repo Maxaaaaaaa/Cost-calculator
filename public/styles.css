@@ -128,12 +128,108 @@ th {
 }
 
 /* Styles for the edit form */
-#editFormContainer {
-    margin-top: 20px;
+.edit-form-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 300px;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    width: 50%; /* Уменьшение ширины формы до 50% */
-    margin: 0 auto; /* Центрирование формы */
+}
+
+/* Styles for filter buttons */
+.filter-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.filter-buttons button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filter-buttons button:hover {
+    background-color: #0056b3;
+}
+
+/* Styles for independent table */
+.independent-table-container {
+    margin-bottom: 20px;
+}
+
+.independent-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.independent-table-container th, .independent-table-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.independent-table-container th {
+    background-color: #f2f2f2;
+}
+
+/* Styles for modal */
+.modal {
+    display: none;
+    position: absolute;
+    z-index: 1050; /* Убедимся, что z-index достаточно высок */
+    left: 0;
+    top: 0;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #888;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content {
+    padding: 20px;
+    position: relative;
+    z-index: 1060; /* Убедимся, что z-index достаточно высок */
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar-fill {
+    height: 20px;
+    width: 0;
+    transition: width 0.5s;
 }
